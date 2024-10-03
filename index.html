@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #e3f2fd;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #89f6fe3c, #66a6ff33);
+      }
+
+      .container {
+        text-align: center;
+        background-color: #ffffff90;
+        padding: 50px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        max-width: 700px;
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        color: #007bff;
+        font-weight: bold;
+        margin-bottom: 30px;
+      }
+
+      p {
+        font-size: 1.2rem;
+        color: #555;
+        margin-bottom: 40px;
+      }
+
+      .btn-custom {
+        padding: 15px 30px;
+        border: none;
+        border-radius: 25px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        cursor: pointer;
+        color: #fff;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-register {
+        background-color: #28a745;
+        margin-right: 15px;
+      }
+
+      .btn-register:hover {
+        background-color: #218838;
+      }
+
+      .btn-patient-list {
+        background-color: #17a2b8;
+      }
+
+      .btn-patient-list:hover {
+        background-color: #138496;
+      }
+
+      .backdrop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background-image: url("https://png.pngtree.com/thumb_back/fh260/background/20210115/pngtree-abstract-medical-wallpaper-template-design-banner-background-image_519861.jpg");
+        background-size: cover;
+        background-position: center;
+        opacity: 0.7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="backdrop"></div>
+
+    <div class="container">
+      <h1>Welcome to the ElderCare Smart Monitoring and Medication System</h1>
+      <p>Manage patient registrations and monitor their medication and health vitals.</p>
+      <div>
+        <a href="patientRegistration.html">
+          <button class="btn-custom btn-register">Patient Registration</button>
+        </a>
+        <a href="patientList.html">
+          <button class="btn-custom btn-patient-list">Patient List</button>
+        </a>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

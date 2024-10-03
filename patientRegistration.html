@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Medication Form</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f8ff;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .container {
+        background-color: #ffffff90;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        width: 100%;
+        margin-top: 30px;
+      }
+      h2 {
+        text-align: center;
+        color: #01b52b;
+        font-weight: bold;
+        margin-bottom: 30px;
+      }
+      label {
+        font-size: 15px;
+        color: #000000;
+        font-weight: bold;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0 16px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      input[type="submit"] {
+        background-color: #269440;
+        color: white;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 12px;
+      }
+      input[type="submit"]:hover {
+        background-color: #218838;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-container {
+        max-width: 100%;
+      }
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px;
+        }
+      }
+      .backdrop {
+        background: linear-gradient(
+            rgba(26, 255, 30, 0.263),
+            rgba(0, 123, 255, 0)
+          ),
+          url("https://www.bicconstruction.com.au/wp-content/uploads/2020/01/scott-webb-hDyO6rr3kqk-unsplash-3-scaled.jpg")
+            center/cover no-repeat;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="backdrop"></div>
+
+    <div class="container">
+      <h2>Patient Medication Form</h2>
+      <form id="patientForm">
+        <div class="form-group">
+          <label for="patientName">Patient Name:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="patientName"
+            name="patientName"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="rfidNumber">RFID Number:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="rfidNumber"
+            name="rfidNumber"
+            required
+          />
+        </div>
+
+        <div class="form-row">
+          <div class="col">
+            <label for="tablet1Quantity">Tablet 1 Quantity:</label>
+            <input
+              type="number"
+              class="form-control"
+              id="tablet1Quantity"
+              name="tablet1Quantity"
+            />
+          </div>
+          <div class="col">
+            <label for="tablet1Time">Tablet 1 Time:</label>
+            <input
+              type="time"
+              class="form-control"
+              id="tablet1Time"
+              name="tablet1Time"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col">
+            <label for="tablet2Quantity">Tablet 2 Quantity:</label>
+            <input
+              type="number"
+              class="form-control"
+              id="tablet2Quantity"
+              name="tablet2Quantity"
+            />
+          </div>
+          <div class="col">
+            <label for="tablet2Time">Tablet 2 Time:</label>
+            <input
+              type="time"
+              class="form-control"
+              id="tablet2Time"
+              name="tablet2Time"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col">
+            <label for="tablet3Quantity">Tablet 3 Quantity:</label>
+            <input
+              type="number"
+              class="form-control"
+              id="tablet3Quantity"
+              name="tablet3Quantity"
+            />
+          </div>
+          <div class="col">
+            <label for="tablet3Time">Tablet 3 Time:</label>
+            <input
+              type="time"
+              class="form-control"
+              id="tablet3Time"
+              name="tablet3Time"
+            />
+          </div>
+        </div>
+
+        <input type="submit" value="Submit" class="btn btn-success btn-block" />
+      </form>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script type="module">
+      // Import Firebase SDK and initialize Firebase
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        set,
+        get,
+        child,
+      } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBoUghi6cU5ovN41FXIkaFOi6gsRlAS8z4",
+        authDomain: "ntp-project-155ff.firebaseapp.com",
+        projectId: "ntp-project-155ff",
+        storageBucket: "ntp-project-155ff.appspot.com",
+        messagingSenderId: "418936877451",
+        appId: "1:418936877451:web:7bc5e9016f551924ebff8e",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      // Handle form submission
+      document
+        .getElementById("patientForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Get form values
+          const patientName = document.getElementById("patientName").value;
+          const rfidNumber = document.getElementById("rfidNumber").value;
+          const tablet1Quantity =
+            document.getElementById("tablet1Quantity").value;
+          const tablet1Time = document.getElementById("tablet1Time").value;
+          const tablet2Quantity =
+            document.getElementById("tablet2Quantity").value;
+          const tablet2Time = document.getElementById("tablet2Time").value;
+          const tablet3Quantity =
+            document.getElementById("tablet3Quantity").value;
+          const tablet3Time = document.getElementById("tablet3Time").value;
+
+          // Write data to Firebase Database
+          set(ref(database, "patients/" + rfidNumber), {
+            patientName: patientName,
+            rfidNumber: rfidNumber,
+            medication: {
+              tablet1: { quantity: tablet1Quantity, time: tablet1Time },
+              tablet2: { quantity: tablet2Quantity, time: tablet2Time },
+              tablet3: { quantity: tablet3Quantity, time: tablet3Time },
+            },
+          })
+            .then(() => {
+              // Reset form
+              document.getElementById("patientForm").reset();
+
+              // Navigate to Patient Details page with RFID as query parameter
+              //   window.location.href = `patientDetails.html?rfid=${rfidNumber}`;
+              window.location.href = "patientList.html";
+            })
+            .catch((error) => {
+              alert("Error: " + error.message);
+            });
+        });
+    </script>
+  </body>
+</html>

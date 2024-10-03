@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Details</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f8ff;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .container {
+        background-color: #ffffff90;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        width: 100%;
+      }
+      h2 {
+        text-align: center;
+        color: #121efd;
+        margin-bottom: 30px;
+        font-weight: bold;
+      }
+      .data-field {
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+      }
+      .data-field span:first-child {
+        font-weight: bold;
+        color: #000000;
+      }
+      .data-field span:last-child {
+        color: #555;
+      }
+      .btn-back {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+      }
+      @media (max-width: 768px) {
+        .data-field {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .data-field span {
+          margin-bottom: 5px;
+        }
+      }
+      .backdrop {
+            background: linear-gradient(rgba(117, 174, 255, 0.5), rgba(0, 123, 255, 0)), url('https://watermark.lovepik.com/photo/40177/1395.jpg_wh1200.jpg') center/cover no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="backdrop"></div>
+
+    <div class="container">
+      <h2>Patient Details</h2>
+      <div class="data-field">
+        <span>Patient Name:</span>
+        <span id="patientName"></span>
+      </div>
+      <div class="data-field">
+        <span>RFID Number:</span>
+        <span id="rfidNumber"></span>
+      </div>
+      <div class="data-field">
+        <span>Tablet 1:</span>
+        <span id="tablet1"></span>
+      </div>
+      <div class="data-field">
+        <span>Tablet 2:</span>
+        <span id="tablet2"></span>
+      </div>
+      <div class="data-field">
+        <span>Tablet 3:</span>
+        <span id="tablet3"></span>
+      </div>
+      <div class="data-field">
+        <span>Heartbeat:</span>
+        <span id="heartbeat"></span>
+      </div>
+      <div class="data-field">
+        <span>Blood Oxygen Level:</span>
+        <span id="oxygenLevel"></span>
+      </div>
+      <div class="data-field">
+        <span>Temperature:</span>
+        <span id="temperature"></span>
+      </div>
+      <a href="patientList.html" class="btn btn-success btn-back">Back to List</a>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+      // Import Firebase SDK and initialize Firebase
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        child,
+      } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBoUghi6cU5ovN41FXIkaFOi6gsRlAS8z4",
+        authDomain: "ntp-project-155ff.firebaseapp.com",
+        projectId: "ntp-project-155ff",
+        storageBucket: "ntp-project-155ff.appspot.com",
+        messagingSenderId: "418936877451",
+        appId: "1:418936877451:web:7bc5e9016f551924ebff8e",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      // Get RFID from query parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const rfid = urlParams.get("rfid");
+
+      // Fetch patient details from Firebase
+      const dbRef = ref(database);
+
+      get(child(dbRef, `patients/${rfid}`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            const patientData = snapshot.val();
+
+            // Display patient information
+            document.getElementById("patientName").innerText =
+              patientData.patientName;
+            document.getElementById("rfidNumber").innerText =
+              patientData.rfidNumber;
+            document.getElementById(
+              "tablet1"
+            ).innerText = `Quantity: ${patientData.medication.tablet1.quantity}, Time: ${patientData.medication.tablet1.time}`;
+            document.getElementById(
+              "tablet2"
+            ).innerText = `Quantity: ${patientData.medication.tablet2.quantity}, Time: ${patientData.medication.tablet2.time}`;
+            document.getElementById(
+              "tablet3"
+            ).innerText = `Quantity: ${patientData.medication.tablet3.quantity}, Time: ${patientData.medication.tablet3.time}`;
+
+            // Assuming the real-time data (heartbeat, oxygen level, temperature) are under 'vitals' in the database
+            document.getElementById("heartbeat").innerText = patientData.vitals
+              ? patientData.vitals.heartbeat
+              : "Not Available";
+            document.getElementById("oxygenLevel").innerText =
+              patientData.vitals
+                ? patientData.vitals.oxygenLevel
+                : "Not Available";
+            document.getElementById("temperature").innerText =
+              patientData.vitals
+                ? patientData.vitals.temperature
+                : "Not Available";
+          } else {
+            alert("No data available for this patient.");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          alert("Error fetching patient data: " + error.message);
+        });
+    </script>
+  </body>
+</html>
